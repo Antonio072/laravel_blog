@@ -2,7 +2,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 /*
     Ruta normal
@@ -34,10 +34,14 @@ Route::get("surname/{name?}",function ($name = "usuario")
 */
 Route::group(["prefix" => 'admin/'],function ($name = "usuario")
 {
+    Route::get("/",function ()
+    {return  view("admin.admin");})->name("admin-home");
+
     Route::get("users",function ()
-    {return  "Usuarios";});
+    {return  view("admin.users");})->name("admin-users");
+    
     Route::get("products",function ()
-    {return  "Productos";});
+    {return  view("admin.products");})->name("admin-products");
 
 });
 
@@ -77,8 +81,30 @@ Route::get("/namedRoute",function(){
     return "Esta ruta esta nombrada";
 })->name("named");
 
-
-
 //Nota: podemos regresar respuesta con los helpers 
 //    return response()->json(['foo' => 'bar', 'a'=>['aa'=>'bb']], 200);
 // regresa un JSON con {"foo":"bar"}
+
+/*
+ ******************* Vistas ******************
+*/
+
+//Ejemplo de ruta que carga una vista
+Route::get("/views",function(){
+    return view("view");
+});
+
+//Ejemplo de ruta que carga una vista con parametro
+Route::get("/views-param",function(){
+    $param = "Parametro";
+    $records = [1,2,3,4,5,6,7];
+    //  Forma de parametros individuales
+        // return view("view")->with("param" , $param);
+    //  Forma "compacta", en este caso se pasa un string y un arreglo
+    return view("view",compact("param","records"));
+});
+
+// Ruta con vista dentro de carpetas
+Route::get("/admin/profile",function(){
+    return view("admin.profile");
+})->name("admin-profile");
