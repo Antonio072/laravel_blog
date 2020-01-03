@@ -97,7 +97,7 @@ Route::get("/views",function(){
 //Ejemplo de ruta que carga una vista con parametro
 Route::get("/views-param",function(){
     $param = "Parametro";
-    $records = [1,2,3,4,5,6,7];
+    $records = [1];
     //  Forma de parametros individuales
         // return view("view")->with("param" , $param);
     //  Forma "compacta", en este caso se pasa un string y un arreglo
@@ -108,3 +108,6 @@ Route::get("/views-param",function(){
 Route::get("/admin/profile",function(){
     return view("admin.profile");
 })->name("admin-profile");
+
+// Ruta con vue
+Route::view("/vue","vue")->name('vue');
