@@ -97,7 +97,7 @@ Route::get("/views",function(){
 //Ejemplo de ruta que carga una vista con parametro
 Route::get("/views-param",function(){
     $param = "Parametro";
-    $records = [1];
+    $records = [1,2,3,4,5,6,7];
     //  Forma de parametros individuales
         // return view("view")->with("param" , $param);
     //  Forma "compacta", en este caso se pasa un string y un arreglo
@@ -109,5 +109,16 @@ Route::get("/admin/profile",function(){
     return view("admin.profile");
 })->name("admin-profile");
 
-// Ruta con vue
-Route::view("/vue","vue")->name('vue');
+// Ruta a vue
+
+Route::view('/vue','vue')->name("vue");
+
+// Ruta para ver si hay conexion con la bd
+Route::get('/database',function(){
+    try {
+        DB::connection()->getPdo();
+    } catch (\Exception $e) {
+        die("No se pudo conectar a la base de datos: " .$e);
+    }
+    return "database";
+})->name('database');
