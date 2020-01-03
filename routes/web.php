@@ -108,3 +108,17 @@ Route::get("/views-param",function(){
 Route::get("/admin/profile",function(){
     return view("admin.profile");
 })->name("admin-profile");
+
+// Ruta a vue
+
+Route::view('/vue','vue')->name("vue");
+
+// Ruta para ver si hay conexion con la bd
+Route::get('/database',function(){
+    try {
+        DB::connection()->getPdo();
+    } catch (\Exception $e) {
+        die("No se pudo conectar a la base de datos: " .$e);
+    }
+    return "database";
+})->name('database');

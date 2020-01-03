@@ -86,6 +86,8 @@
 
                 <div class="links">
                     <a href="{{ route('admin-home') }}">Admin view example</a>
+                    <a href="{{ route('database') }}">Check if database is enabled</a>
+                    <a href="{{ route('vue') }}">Vue example</a>
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
