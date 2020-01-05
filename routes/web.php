@@ -125,5 +125,6 @@ Route::get('/database',function(){
 
 // Ruta para obtener a todos los usuarios
 Route::get('/allUsers', function(){
-    return App\User::all();
+   dd(App\User::with('posts')->get());
+   return $user;
 });
