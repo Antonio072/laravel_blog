@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
             'users',
             'posts',
             'comments'
-
         ]);
         $this->call(UsersTableSeeder::class);
         $this->call(PostsTableSeeder::class);
