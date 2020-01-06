@@ -122,3 +122,8 @@ Route::get('/database',function(){
     }
     return "database";
 })->name('database');
+
+// Ruta para obtener a todos los usuarios
+Route::get('/allUsers', function(){
+    return App\User::all();
+});
