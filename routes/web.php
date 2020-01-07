@@ -125,6 +125,13 @@ Route::get('/database',function(){
 
 // Ruta para obtener a todos los usuarios
 Route::get('/allUsers', function(){
-   dd(App\User::with('posts')->get());
+    $user = App\User::with(['posts' => function($query){
+        $query->where('id',183);
+    }])->where('id',1)->get();
+//    dd(App\User::with('posts')->first()->posts->first()->id);
+
    return $user;
 });
+
+// Ruta para obtener a todos los posts
+Route::get('/posts','PostController@index');
