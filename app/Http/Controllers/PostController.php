@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class PostController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -13,17 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+      return $this->sendSuccessResponse(Post::all(), 'Post successfully fetched');     
     }
 
     /**
@@ -34,7 +24,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $count = \App\User::count();
+        $post = new Post;
+        $post->title= $request->title;
+        $post->content= $request->content;
+        $post->user_id= $request->user_id;
+
+        $post->save();
+
+        return $this->sendSuccessResponse($post, 'Post created sucessfully');
     }
 
     /**
@@ -45,18 +43,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $post = Post::findOrFail($id);
+        
+       return $this->sendSuccessResponse($post, 'Post successfully fetched');
     }
 
     /**
@@ -68,7 +57,14 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        print_r($request->title);
+        $post = Post::findOrFail($id);
+        // print_r($post);
+        if($request->has('title')) $post->title= $request->title;
+        if($request->has('content')) $post->content= $request->content;
+        $post->save();
+        
+        return $this->sendSuccessResponse($post, 'Post successfully updated');
     }
 
     /**
@@ -79,6 +75,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::FindOrFail($id);
+        $post->delete();
+        return $this->sendSuccessResponse(['id' => $post->id,], 'Post succesfully deleted');
     }
 }
