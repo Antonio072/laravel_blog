@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\View;
 
 class PostController extends ApiController
 {
@@ -65,12 +66,11 @@ class PostController extends ApiController
     }
     
     public function edit($id)
-    {   
+    {  
         try{
             $post = Post::findOrFail($id);
 
-            return View::make('post.edit')
-            ->with('post', $post);
+            return View::make('posts.edit')->with('post', $post);
         }
         catch(\Exception $e){
             return $this->sendErrorResponse('Post not found');

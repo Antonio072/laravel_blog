@@ -7,6 +7,6 @@
     <title>Editar post</title>
 </head>
 <body>
-    {{$request->has('id');}}
+   
 </body>
 </html>

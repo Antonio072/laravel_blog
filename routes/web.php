@@ -141,7 +141,7 @@ Route::prefix('posts')->name('posts.')
     ->group(function(){
     Route::view('/','posts.posts');
     Route::view('/create','posts.create')->name('create');
-    Route::view('/{id}/edit','posts.edit')->name('edit');
+    Route::get('/{id}/edit','PostController@edit')->name('edit');
  });
 
  /**
