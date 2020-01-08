@@ -17,4 +17,14 @@ class ApiController extends Controller
             ], 200,[], JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT
         );
     }
+
+    protected function sendErrorResponse($message = 'Unexpected error. Try again.', $code=501)
+    {
+        return response()->json(
+            [
+            'flag'=>false,
+            'message'=>$message],
+            $code
+        );
+    }
 }

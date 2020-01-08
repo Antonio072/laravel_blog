@@ -20,8 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 /**
  * Posts routes
  */
-Route::prefix('posts')
-    ->name('posts.')
+Route::middleware('web')->prefix('posts')
+    ->name('api.posts.')
     ->group(
     function () {
         /**

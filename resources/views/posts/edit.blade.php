@@ -8,25 +8,17 @@
 </head>
 <body>
     <div class="container">
-        @if($errors->any())
-            {{$errors->first}}
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-            </div>
+    @section('sidebar')
+            This is the master sidebar.
+        @show
+    <form action="{{route('posts.create')}}" method="POST" role="form">
+        <legend>Editar post {{$id}}</legend>
 
-        @endif
-    <form action="{{route('api.posts.create')}}" method="POST" role="form">
-        <legend>Nuevo post</legend>
-    
         <div class="form-group">
             <label for="">Titulo</label>
-            <input type="text" class="form-control" name="title" id="" placeholder="Titulo del post" >
+            <input type="text" class="form-control" name="title" id="" placeholder="Titulo del post" required>
             <label for="">Contenido</label>
-            <input type="text" class="form-control" name="content" id="" placeholder="Contenido del post" >
+            <input type="text" class="form-control" name="content" id="" placeholder="Contenido del post" required>
             <input type="hidden" class="form-control" name="user_id" value="1">
         </div>
     

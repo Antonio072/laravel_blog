@@ -137,7 +137,9 @@ Route::get('/allUsers', function(){
  * Ruta para la crecion de nuevos formularios
  */
 
-Route::prefix('posts')->group(function(){
+Route::prefix('posts')->name('posts.')
+    ->group(function(){
     Route::view('/','posts.posts');
-    Route::view('/create','posts.create');
+    Route::view('/create','posts.create')->name('create');
+    Route::view('/edit/{id}','posts.edit')->name('edit');
  });

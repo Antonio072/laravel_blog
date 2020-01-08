@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Validator;
 
 class PostController extends ApiController
 {
@@ -24,7 +25,17 @@ class PostController extends ApiController
      */
     public function store(Request $request)
     {
-        $count = \App\User::count();
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|min:5|max:200',
+            'content' => 'required|min:5|max:200',
+            'user_id' => 'required|min:0',
+        ]);
+
+        if($validator->fails())
+        {   
+            return $this->sendErrorResponse('Error al registrar, no se cumplieron los requerimientos en los campos, Posts.');
+        }
+        
         $post = new Post;
         $post->title= $request->title;
         $post->content= $request->content;
@@ -42,10 +53,15 @@ class PostController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $post = Post::findOrFail($id);
-        
-       return $this->sendSuccessResponse($post, 'Post successfully fetched');
+    {   
+        try{
+            $post = Post::findOrFail($id);
+
+            return $this->sendSuccessResponse($post, 'Post successfully fetched');
+        }
+        catch(\Exception $e){
+            return $this->sendErrorResponse('Post not found');
+        }
     }
 
     /**
@@ -57,14 +73,19 @@ class PostController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        print_r($request->title);
-        $post = Post::findOrFail($id);
-        // print_r($post);
-        if($request->has('title')) $post->title= $request->title;
-        if($request->has('content')) $post->content= $request->content;
-        $post->save();
-        
-        return $this->sendSuccessResponse($post, 'Post successfully updated');
+        try{
+
+            $post = Post::findOrFail($id);
+            print_r($request->title)
+            if($request->has('title')) $post->title= $request->title;
+            if($request->has('content')) $post->content= $request->content;
+            $post->save();
+            
+            return $this->sendSuccessResponse($post, 'Post successfully updated');
+        }
+        catch(\Exception $e){
+            return $this->sendErrorResponse('Post not found');
+        }
     }
 
     /**
@@ -74,9 +95,13 @@ class PostController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   try {
         $post = Post::FindOrFail($id);
         $post->delete();
         return $this->sendSuccessResponse(['id' => $post->id,], 'Post succesfully deleted');
+    } catch (\Throwable $th) {
+        return $this->sendErrorResponse('Post not found');
+    }
+      
     }
 }
