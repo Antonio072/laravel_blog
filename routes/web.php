@@ -138,6 +138,7 @@ Route::get('/allUsers', function(){
  */
 
 Route::prefix('posts')->name('posts.')
+->middleware(['verified'])
     ->group(function(){
     Route::view('/','posts.posts');
     Route::view('/create','posts.create')->name('create');
@@ -154,6 +155,6 @@ Route::prefix('posts')->name('posts.')
     Route::view('/create','comments.create')->name('create');
     Route::get('/{id}/edit','CommentController@edit')->name('edit');
  });
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
