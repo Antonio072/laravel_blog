@@ -154,3 +154,6 @@ Route::prefix('posts')->name('posts.')
     Route::view('/create','comments.create')->name('create');
     Route::get('/{id}/edit','CommentController@edit')->name('edit');
  });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
