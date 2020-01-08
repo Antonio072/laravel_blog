@@ -134,12 +134,23 @@ Route::get('/allUsers', function(){
 });
 
 /**
- * Ruta para la crecion de nuevos formularios
+ * Ruta de posts
  */
 
 Route::prefix('posts')->name('posts.')
     ->group(function(){
     Route::view('/','posts.posts');
     Route::view('/create','posts.create')->name('create');
-    Route::view('/edit/{id}','posts.edit')->name('edit');
+    Route::view('/{id}/edit','posts.edit')->name('edit');
+ });
+
+ /**
+  * Rutas de comentarios
+  */
+  
+  Route::prefix('comment')->name('comment.')
+    ->group(function(){
+    Route::view('/','comment.comment');
+    Route::view('/create','comment.create')->name('create');
+    Route::view('/{id}/edit','comment.edit')->name('edit');
  });

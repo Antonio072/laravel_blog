@@ -63,6 +63,19 @@ class PostController extends ApiController
             return $this->sendErrorResponse('Post not found');
         }
     }
+    
+    public function edit($id)
+    {   
+        try{
+            $post = Post::findOrFail($id);
+
+            return View::make('post.edit')
+            ->with('post', $post);
+        }
+        catch(\Exception $e){
+            return $this->sendErrorResponse('Post not found');
+        }
+    }
 
     /**
      * Update the specified resource in storage.
