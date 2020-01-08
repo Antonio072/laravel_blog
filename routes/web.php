@@ -162,7 +162,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('/user')
     ->name('users.')
     ->group(function(){
-    Route::view('/','users.profile')->name('profile');
+    Route::get('/{user}','UserController@profile')->name('profile');
     Route::get('/{user}/posts','UserController@userPosts')->name('posts');
     // Route::get('/{id}/edit','CommentController@edit')->name('edit');
  });

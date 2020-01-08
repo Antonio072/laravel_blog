@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\Post;
+use Illuminate\Support\Facades\View;
+use DB;
 
 class UserController extends ApiController
 {
@@ -19,19 +21,38 @@ class UserController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for fetch all posts from the user
      *
      * @return \Illuminate\Http\Response
      */
-    public function userPosts(Request $request, $id)
+    public function userPosts($id)
     {   
         $user = $this->getAuthenticatedUser();
-        $userPosts = User::select('users.*')
+        // echo $user->id;
+        $userPosts = User::select('users.name','posts.*')
+            ->join('posts' , 'posts.user_id', '=', 'users.id')
             ->where('users.id', '=', $user->id)
             ->get();
-    dd($userPosts);
         return View::make('users.posts')->with('userPosts',$userPosts);
     }
+
+    /**
+     * Show the form for fetch all posts from the user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile($id)
+    {   
+        $user = $this->getAuthenticatedUser();
+        $userProfile = User::select('users.*',DB::raw('count(posts.id) as posts'))
+            ->join('posts' , 'posts.user_id', '=', 'users.id')
+            ->where('users.id', '=', $user->id)
+            ->groupBy('users.id')
+            ->get()->first();
+
+        return View::make('users.profile')->with('userProfile',$userProfile);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
