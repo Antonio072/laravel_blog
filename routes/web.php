@@ -158,3 +158,11 @@ Route::prefix('posts')->name('posts.')
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('/user')
+    ->name('users.')
+    ->group(function(){
+    Route::view('/','users.profile')->name('profile');
+    Route::get('/{user}/posts','UserController@userPosts')->name('posts');
+    // Route::get('/{id}/edit','CommentController@edit')->name('edit');
+ });

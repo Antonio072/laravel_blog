@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Models\Post;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,6 +18,20 @@ class UserController extends Controller
         //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function userPosts(Request $request, $id)
+    {   
+        $user = $this->getAuthenticatedUser();
+        $userPosts = User::select('users.*')
+            ->where('users.id', '=', $user->id)
+            ->get();
+    dd($userPosts);
+        return View::make('users.posts')->with('userPosts',$userPosts);
+    }
     /**
      * Show the form for creating a new resource.
      *
