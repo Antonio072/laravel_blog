@@ -110,7 +110,7 @@ class PostController extends ApiController
     {   try {
         $post = Post::FindOrFail($id);
         $post->delete();
-        return $this->sendSuccessResponse(['id' => $post->id,], 'Post succesfully deleted');
+        return $this->sendSuccessResponse(['id' => $post->id], 'Post succesfully deleted');
     } catch (\Throwable $th) {
         return $this->sendErrorResponse('Post not found');
     }

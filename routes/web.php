@@ -148,9 +148,9 @@ Route::prefix('posts')->name('posts.')
   * Rutas de comentarios
   */
   
-  Route::prefix('comment')->name('comment.')
+  Route::prefix('comments')->name('comment.')
     ->group(function(){
-    Route::view('/','comment.comment');
-    Route::view('/create','comment.create')->name('create');
-    Route::view('/{id}/edit','comment.edit')->name('edit');
+    Route::view('/','comments.comments');
+    Route::view('/create','comments.create')->name('create');
+    Route::get('/{id}/edit','CommentController@edit')->name('edit');
  });

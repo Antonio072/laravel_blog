@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\View;
 
 class CommentController extends ApiController
 {
@@ -58,8 +59,11 @@ class CommentController extends ApiController
     {
         try {
             
-            $comment = Comment::findOrFail($id);
-
+            $comment = Comment::select('comments.*','posts.title','users.name')
+            ->join('posts', 'posts.id', '=', 'comments.post_id')
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->where('comments.id','=',$id)
+            ->first();  
             return $this->sendSuccessResponse($comment, "Comment fetched successfuly");
         } catch (\Throwable $th) {
             
@@ -75,7 +79,20 @@ class CommentController extends ApiController
      */
     public function edit($id)
     {
-        //
+        try{
+            $comment = Comment::select('comments.*','posts.title','users.name')
+            ->join('posts', 'posts.id', '=', 'comments.post_id')
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->where('comments.id','=',$id)
+            ->first();  
+
+            // dd($comment);
+            return View::make('comments.edit')->with('comment', $comment);
+        }
+        catch(\Exception $e){
+            return $e;
+            return $this->sendErrorResponse('Comment not found');
+        }
     }
 
     /**
@@ -112,7 +129,7 @@ class CommentController extends ApiController
             
             $comment = Comment::findOrFail($id);
             $comment->delete();
-            return $this->sendSuccessResponse($comment, "Comment deleted successfuly");
+            return $this->sendSuccessResponse(['id' =>$comment->id], "Comment deleted successfuly");
         } catch (\Throwable $th) {
             
             return $this->sendErrorResponse("Comment not found");
