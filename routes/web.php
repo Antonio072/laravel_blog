@@ -133,5 +133,11 @@ Route::get('/allUsers', function(){
    return $user;
 });
 
-// Ruta para obtener a todos los posts
-Route::get('/posts','PostController@index');
+/**
+ * Ruta para la crecion de nuevos formularios
+ */
+
+Route::prefix('posts')->group(function(){
+    Route::view('/','posts.posts');
+    Route::view('/create','posts.create');
+ });
