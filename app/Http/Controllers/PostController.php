@@ -76,7 +76,6 @@ class PostController extends ApiController
         try{
 
             $post = Post::findOrFail($id);
-            print_r($request->title)
             if($request->has('title')) $post->title= $request->title;
             if($request->has('content')) $post->content= $request->content;
             $post->save();

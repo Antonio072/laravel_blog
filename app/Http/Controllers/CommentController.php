@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Validator;
 
-class CommentController extends Controller
+class CommentController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -12,18 +14,9 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    {   
+        $Comments = Comment::all();
+        return $this->sendSuccessResponse($Comments,"Comments fetched successfully");
     }
 
     /**
@@ -34,7 +27,25 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'content' => 'required|min:5|max:200',
+            'user_id' => 'required|min:0',
+            'Comment_id' => 'required|min:0',
+        ]);
+
+        if($validator->fails())
+        {   
+            return $this->sendErrorResponse('Error al registrar, no se cumplieron los requerimientos para el comentario, Comments.');
+        }
         
+        $comment = new Comment();
+        $comment->content = $request->content;
+        $comment->user_id = $request->user_id;
+        $comment->Comment_id = $request->Comment_id;
+
+        $comment->save();
+
+        return $this->sendSuccessResponse($comment, "Comment created successfully on Comment " . $comment->Comment_id);
     }
 
     /**
@@ -45,7 +56,15 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            
+            $comment = Comment::findOrFail($id);
+
+            return $this->sendSuccessResponse($comment, "Comment fetched successfuly");
+        } catch (\Throwable $th) {
+            
+            return $this->sendErrorResponse("Comment not found");
+        }
     }
 
     /**
@@ -68,7 +87,17 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+
+            $Comment = Comment::findOrFail($id);
+            if($request->has('content')) $Comment->content= $request->content;
+            $Comment->save();
+            
+            return $this->sendSuccessResponse($Comment, 'Comment updated updated');
+        }
+        catch(\Exception $e){
+            return $this->sendErrorResponse('Comment not found');
+        }
     }
 
     /**
@@ -79,6 +108,14 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            
+            $comment = Comment::findOrFail($id);
+            $comment->delete();
+            return $this->sendSuccessResponse($comment, "Comment deleted successfuly");
+        } catch (\Throwable $th) {
+            
+            return $this->sendErrorResponse("Comment not found");
+        }
     }
 }

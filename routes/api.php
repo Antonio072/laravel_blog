@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 /**
  * Posts routes
  */
-Route::middleware('web')->prefix('posts')
+Route::prefix('posts')
     ->name('api.posts.')
     ->group(
     function () {
@@ -32,4 +32,18 @@ Route::middleware('web')->prefix('posts')
         Route::get('/{id}', 'PostController@show')->name('getId');
         Route::put('/{id}', 'PostController@update')->name('update');
         Route::delete('/{id}', 'PostController@destroy')->name('delete');
+    });
+
+Route::prefix('comments')
+    ->name('api.comments.')
+    ->group(
+    function () {
+        /**
+         * Post Routes
+         */
+        Route::get('/', 'CommentController@index')->name('get');
+        Route::post('/','CommentController@store')->name('create');
+        Route::get('/{id}', 'CommentController@show')->name('getId');
+        Route::put('/{id}', 'CommentController@update')->name('update');
+        Route::delete('/{id}', 'CommentController@destroy')->name('delete');
     });
