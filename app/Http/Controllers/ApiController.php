@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
@@ -26,5 +27,13 @@ class ApiController extends Controller
             'message'=>$message],
             $code
         );
+    }
+
+    protected function getAuthenticatedUser(){
+        try {
+           return  $user = Auth::user();
+        } catch (\Throwable $th) {
+            return 'No hay sesion';
+        }
     }
 }
