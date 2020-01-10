@@ -57,8 +57,8 @@ class PostController extends ApiController
     {   
         try{
             $post = Post::findOrFail($id);
-
-            return $this->sendSuccessResponse($post, 'Post successfully fetched');
+            return View::make('posts.show')->with('post',$post);
+            // return $this->sendSuccessResponse($post, 'Post succe ssfully fetched');
         }
         catch(\Exception $e){
             return $this->sendErrorResponse('Post not found');
@@ -110,7 +110,8 @@ class PostController extends ApiController
     {   try {
         $post = Post::FindOrFail($id);
         $post->delete();
-        return $this->sendSuccessResponse(['id' => $post->id], 'Post succesfully deleted');
+        return View::make('posts.delete');
+        // return $this->sendSuccessResponse(['id' => $post->id], 'Post succesfully deleted');
     } catch (\Throwable $th) {
         return $this->sendErrorResponse('Post not found');
     }
