@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="container">
+    @if ($post->message)
+    <div class="alert alert-success">
+        {{ $post->message }}
+    </div>
+    @endif
     <form class="form" action="{{route('api.posts.update',$post->id)}}" method="POST" role="form">
         <legend>Editar post {{$post->id}}</legend>
 
