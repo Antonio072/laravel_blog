@@ -138,9 +138,11 @@ Route::get('/allUsers', function(){
  */
 
 Route::prefix('posts')->name('posts.')
-->middleware(['verified'])
+    ->middleware(['verified'])
     ->group(function(){
     Route::view('/','posts.posts');
+    Route::get('/{id}','PostController@show')->name('show');
+    Route::delete('/{id}','PostController@destroy')->name('delete');
     Route::view('/create','posts.create')->name('create');
     Route::get('/{id}/edit','PostController@edit')->name('edit');
  });
@@ -155,7 +157,7 @@ Route::prefix('posts')->name('posts.')
     Route::view('/create','comments.create')->name('create');
     Route::get('/{id}/edit','CommentController@edit')->name('edit');
  });
-Auth::routes(['verify' => true]);
+Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 

@@ -5,6 +5,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends ApiController
 {
@@ -57,8 +58,8 @@ class PostController extends ApiController
     {   
         try{
             $post = Post::findOrFail($id);
-
-            return $this->sendSuccessResponse($post, 'Post successfully fetched');
+            return View::make('posts.show')->with('post',$post);
+            // return $this->sendSuccessResponse($post, 'Post succe ssfully fetched');
         }
         catch(\Exception $e){
             return $this->sendErrorResponse('Post not found');
@@ -91,9 +92,10 @@ class PostController extends ApiController
             $post = Post::findOrFail($id);
             if($request->has('title')) $post->title= $request->title;
             if($request->has('content')) $post->content= $request->content;
-            $post->save();
-            
-            return $this->sendSuccessResponse($post, 'Post successfully updated');
+            // $post->save();
+            $post->message = "Post actualizado correctamente";
+            return View::make('posts.edit')->with('post',$post);
+            // return $this->sendSuccessResponse($post, 'Post successfully updated');
         }
         catch(\Exception $e){
             return $this->sendErrorResponse('Post not found');
@@ -107,11 +109,20 @@ class PostController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   try {
-        $post = Post::FindOrFail($id);
-        $post->delete();
-        return $this->sendSuccessResponse(['id' => $post->id], 'Post succesfully deleted');
-    } catch (\Throwable $th) {
+    {   
+        $user = Auth::user();
+        if($user->can('delete',$post)){
+            dd("puede borrar");
+        }
+        else{
+            
+        }
+            try {
+                $post = Post::FindOrFail($id);
+                // $post->delete();
+                // return View::make('posts.delete');
+                // return $this->sendSuccessResponse(['id' => $post->id], 'Post succesfully deleted');
+            } catch (\Throwable $th) {
         return $this->sendErrorResponse('Post not found');
     }
       

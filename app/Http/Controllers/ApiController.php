@@ -30,10 +30,26 @@ class ApiController extends Controller
     }
 
     protected function getAuthenticatedUser(){
-        try {
-           return  $user = Auth::user();
-        } catch (\Throwable $th) {
-            return 'No hay sesion';
+        $user= null;
+        try{
+            $user = Auth::user();
         }
+        catch (Exceptions\JWTException $e){
+            $this->sendErrorResponse('Sessión invalida here', 403);
+        }
+        return $user;
+    }
+
+    protected function sendSuccessLoginResponse($data, $message = 'Successful operation', $meta = []){
+        $token = $data['token'];
+        unset($data['token']);
+        return response()->json([
+                'flag' => true,
+                'message' => $message,
+                'data' => $data,
+                'meta' => $meta], 
+                200,[], JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT)
+            ->header( 
+            'Content-type', 'text/json')->cookie('token', $token, 60);
     }
 }
